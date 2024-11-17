@@ -1,0 +1,38 @@
+package com.coursework.workwise.service;
+
+import com.coursework.workwise.dto.ResumeCreationDto;
+import com.coursework.workwise.dto.ResumeDto;
+import com.coursework.workwise.entity.Resume;
+import com.coursework.workwise.exception.ResumeNotFoundException;
+import com.coursework.workwise.mapper.ResumeMapper;
+import com.coursework.workwise.repository.ResumeRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Service
+@Transactional(readOnly = true)
+@AllArgsConstructor
+public class ResumeService {
+    private final ResumeRepository resumeRepository;
+    private final ResumeMapper resumeMapper;
+
+    public ResumeDto getById(Long id){
+        Resume resume = resumeRepository.findById(id).orElseThrow(() -> new ResumeNotFoundException("Resume Not Found"));
+        return resumeMapper.toDto(resume);
+    }
+
+    public List<ResumeDto> getAll(){
+        List<Resume> resumes = resumeRepository.findAll();
+        return  resumes.stream()
+                .map(resumeMapper::toDto)
+                .toList();
+    }
+
+    @Transactional
+    public ResumeDto create(ResumeCreationDto resumeCreationDto){
+        return resumeMapper.toDto(resumeRepository.save(resumeMapper.toEntity(resumeCreationDto)));
+    }
+}
