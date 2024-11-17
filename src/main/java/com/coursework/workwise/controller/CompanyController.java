@@ -31,7 +31,7 @@ public class CompanyController {
     }
 
     @PostMapping
-    public ResponseEntity<CompanyDto> createJobApplication(@Valid @RequestBody CompanyCreationDto companyCreationDto) {
+    public ResponseEntity<CompanyDto> createCompany(@Valid @RequestBody CompanyCreationDto companyCreationDto) {
         return new ResponseEntity(companyService.create(companyCreationDto), HttpStatus.CREATED);
     }
 }
