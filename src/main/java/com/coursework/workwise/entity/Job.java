@@ -2,7 +2,9 @@ package com.coursework.workwise.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -26,11 +28,12 @@ public class Job {
     @Column(name = "location")
     private String location;
 
-    @Column(name = "salaryRange")
-    private String salaryRange;
+    @Column(name = "salary")
+    private Long salary;
 
-    @Column(name = "postedDate")
-    private String postedDate;
+    @CreationTimestamp
+    @Column(name = "posted_date")
+    private LocalDate postedDate;
 
     @ManyToOne
     @JoinColumn(name = "employer_id")

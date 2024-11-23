@@ -36,8 +36,8 @@ public class User {
     @OneToMany(mappedBy = "employer")
     private List<Job> jobs;
 
-    @OneToMany(mappedBy = "user")
-    private List<Resume> resumes;
+    @OneToOne(mappedBy = "user")
+    private Resume resumes;
 
     @OneToOne(mappedBy = "employer")
     private Company company;
