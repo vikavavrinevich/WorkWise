@@ -2,6 +2,10 @@ package com.coursework.workwise.controller;
 
 import com.coursework.workwise.dto.ResumeCreationDto;
 import com.coursework.workwise.dto.ResumeDto;
+import com.coursework.workwise.exception.CompanyAlreadyExistException;
+import com.coursework.workwise.exception.JobNotFoundException;
+import com.coursework.workwise.exception.ResumeAlreadyExistsException;
+import com.coursework.workwise.exception.ResumeNotFoundException;
 import com.coursework.workwise.service.ResumeService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -19,7 +23,11 @@ public class ResumeController {
 
     @GetMapping("{id}")
     public ResponseEntity<ResumeDto> getResumeById(@PathVariable Long id) {
-        return ResponseEntity.ok(resumeService.getById(id));
+        try {
+            return ResponseEntity.ok(resumeService.getById(id));
+        }catch (ResumeNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
     @GetMapping
@@ -29,18 +37,30 @@ public class ResumeController {
 
     @PostMapping
     public ResponseEntity<ResumeDto> createResume(@Valid @RequestBody ResumeCreationDto resumeCreationDto) {
-        return new ResponseEntity(resumeService.create(resumeCreationDto), HttpStatus.CREATED);
+        try {
+            return new ResponseEntity(resumeService.create(resumeCreationDto), HttpStatus.CREATED);
+        }catch (ResumeAlreadyExistsException e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+        }
     }
 
     @PutMapping("{id}")
     public ResponseEntity<ResumeDto> updateResume(@PathVariable Long id, @RequestBody ResumeDto resumeDto){
-        return new ResponseEntity(resumeService.update(id, resumeDto), HttpStatus.OK);
+        try {
+            return new ResponseEntity(resumeService.update(id, resumeDto), HttpStatus.OK);
+        }catch (ResumeNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteResume(@PathVariable Long id){
-        resumeService.delete(id);
-        return ResponseEntity.noContent().build();
+        try {
+            resumeService.delete(id);
+            return ResponseEntity.noContent().build();
+        }catch (ResumeNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
 }

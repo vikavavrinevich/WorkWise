@@ -2,6 +2,8 @@ package com.coursework.workwise.controller;
 
 import com.coursework.workwise.dto.JobApplicationCreationDto;
 import com.coursework.workwise.dto.JobApplicationDto;
+import com.coursework.workwise.exception.JobApplicationNotFoundException;
+import com.coursework.workwise.exception.JobNotFoundException;
 import com.coursework.workwise.service.JobApplicationService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -19,7 +21,11 @@ public class JobApplicationController {
 
     @GetMapping("{id}")
     public ResponseEntity<JobApplicationDto> getJobApplicationById(@PathVariable Long id) {
-        return ResponseEntity.ok(jobApplicationService.getById(id));
+        try {
+            return ResponseEntity.ok(jobApplicationService.getById(id));
+        }catch (JobApplicationNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
     @GetMapping
@@ -34,19 +40,31 @@ public class JobApplicationController {
 
     @PatchMapping("/{id}/approve")
     public ResponseEntity<JobApplicationDto> approveApplication(@PathVariable Long id) {
-        JobApplicationDto updatedApplication = jobApplicationService.approveApplication(id);
-        return ResponseEntity.ok(updatedApplication);
+        try {
+            JobApplicationDto updatedApplication = jobApplicationService.approveApplication(id);
+            return ResponseEntity.ok(updatedApplication);
+        }catch (JobApplicationNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
     @PatchMapping("/{id}/reject")
     public ResponseEntity<JobApplicationDto> rejectApplication(@PathVariable Long id) {
-        JobApplicationDto updatedApplication = jobApplicationService.rejectApplication(id);
-        return ResponseEntity.ok(updatedApplication);
+        try {
+            JobApplicationDto updatedApplication = jobApplicationService.rejectApplication(id);
+            return ResponseEntity.ok(updatedApplication);
+        }catch (JobApplicationNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteJobApplication(@PathVariable Long id){
-        jobApplicationService.getById(id);
-        return ResponseEntity.noContent().build();
+        try {
+            jobApplicationService.getById(id);
+            return ResponseEntity.noContent().build();
+        }catch (JobApplicationNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 }

@@ -5,6 +5,7 @@ import com.coursework.workwise.dto.JobApplicationDto;
 import com.coursework.workwise.entity.JobApplication;
 import com.coursework.workwise.enums.ApplicationStatus;
 import com.coursework.workwise.exception.JobApplicationNotFoundException;
+import com.coursework.workwise.exception.ResumeNotFoundException;
 import com.coursework.workwise.mapper.JobApplicationMapper;
 import com.coursework.workwise.repository.JobApplicationRepository;
 import lombok.AllArgsConstructor;
@@ -58,6 +59,9 @@ public class JobApplicationService {
 
     @Transactional
     public void delete(Long id){
+        if(!jobApplicationRepository.existsById(id)){
+            throw new ResumeNotFoundException("Resume with id " + " not found");
+        }
         jobApplicationRepository.deleteById(id);
     }
 
