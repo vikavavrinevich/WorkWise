@@ -3,7 +3,6 @@ package com.coursework.workwise.service;
 import com.coursework.workwise.dto.ResumeCreationDto;
 import com.coursework.workwise.dto.ResumeDto;
 import com.coursework.workwise.entity.Resume;
-import com.coursework.workwise.exception.JobNotFoundException;
 import com.coursework.workwise.exception.ResumeAlreadyExistsException;
 import com.coursework.workwise.exception.ResumeNotFoundException;
 import com.coursework.workwise.mapper.ResumeMapper;
@@ -36,10 +35,6 @@ public class ResumeService {
 
     @Transactional
     public ResumeDto create(ResumeCreationDto resumeCreationDto){
-        boolean userHasResume = resumeRepository.existsByUser(resumeCreationDto.userName());
-        if (userHasResume) {
-            throw new ResumeAlreadyExistsException("User with ID " + resumeCreationDto.userName().getId() + " already has a resume.");
-        }
         return resumeMapper.toDto(resumeRepository.save(resumeMapper.toEntity(resumeCreationDto)));
     }
 

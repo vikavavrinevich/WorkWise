@@ -15,4 +15,5 @@ public interface ResumeMapper {
     Resume partialUpdate(ResumeDto resumeDto, @MappingTarget Resume resume);
 
     Resume toEntity(ResumeCreationDto resumeCreationDto);
+
 }

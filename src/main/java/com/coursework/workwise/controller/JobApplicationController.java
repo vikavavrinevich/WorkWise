@@ -3,7 +3,6 @@ package com.coursework.workwise.controller;
 import com.coursework.workwise.dto.JobApplicationCreationDto;
 import com.coursework.workwise.dto.JobApplicationDto;
 import com.coursework.workwise.exception.JobApplicationNotFoundException;
-import com.coursework.workwise.exception.JobNotFoundException;
 import com.coursework.workwise.service.JobApplicationService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

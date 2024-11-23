@@ -11,7 +11,7 @@ import java.io.Serializable;
 /**
  * DTO for {@link com.coursework.workwise.entity.Resume}
  */
-public record ResumeCreationDto(@NotNull User userName,
+public record ResumeCreationDto(@NotNull UserDto user,
                                 @NotNull @Size(max = 255) @NotEmpty @NotBlank String summary,
                                 @NotNull @Size(max = 255) @NotEmpty @NotBlank String skills,
                                 @NotNull @Size(max = 255) @NotEmpty @NotBlank String experience,

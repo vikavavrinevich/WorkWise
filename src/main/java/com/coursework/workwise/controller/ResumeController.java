@@ -2,8 +2,6 @@ package com.coursework.workwise.controller;
 
 import com.coursework.workwise.dto.ResumeCreationDto;
 import com.coursework.workwise.dto.ResumeDto;
-import com.coursework.workwise.exception.CompanyAlreadyExistException;
-import com.coursework.workwise.exception.JobNotFoundException;
 import com.coursework.workwise.exception.ResumeAlreadyExistsException;
 import com.coursework.workwise.exception.ResumeNotFoundException;
 import com.coursework.workwise.service.ResumeService;

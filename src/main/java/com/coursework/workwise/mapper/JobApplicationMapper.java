@@ -15,4 +15,5 @@ public interface JobApplicationMapper {
     JobApplication partialUpdate(JobApplicationDto jobApplicationDto, @MappingTarget JobApplication jobApplication);
 
     JobApplication toEntity(JobApplicationCreationDto jobApplicationCreationDto);
+
 }
