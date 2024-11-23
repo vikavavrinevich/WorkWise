@@ -2,8 +2,8 @@ package com.coursework.workwise.exception;
 
 import jakarta.persistence.EntityNotFoundException;
 
-public class JobNotFountException extends EntityNotFoundException {
-    public JobNotFountException(String message) {
+public class JobNotFoundException extends EntityNotFoundException {
+    public JobNotFoundException(String message) {
         super(message);
     }
 }

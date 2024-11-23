@@ -2,7 +2,7 @@ package com.coursework.workwise.controller;
 
 import com.coursework.workwise.dto.JobCreationDto;
 import com.coursework.workwise.dto.JobDto;
-import com.coursework.workwise.exception.JobNotFountException;
+import com.coursework.workwise.exception.JobNotFoundException;
 import com.coursework.workwise.service.JobService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -20,7 +20,11 @@ public class JobController {
 
     @GetMapping("{id}")
     public ResponseEntity<JobDto> getJobById(@PathVariable Long id) {
-        return ResponseEntity.ok(jobService.getById(id));
+        try {
+            return ResponseEntity.ok(jobService.getById(id));
+        }catch (JobNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
     @GetMapping
@@ -37,7 +41,7 @@ public class JobController {
     public ResponseEntity<JobDto> updateJob(@PathVariable Long id, @RequestBody JobDto jobDto){
         try{
             return new ResponseEntity(jobService.update(id, jobDto), HttpStatus.OK);
-        } catch (JobNotFountException e){
+        } catch (JobNotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
@@ -47,7 +51,7 @@ public class JobController {
         try{
             jobService.delete(id);
             return ResponseEntity.noContent().build();
-        } catch (JobNotFountException e){
+        } catch (JobNotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }

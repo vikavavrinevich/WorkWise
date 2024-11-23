@@ -2,13 +2,9 @@ package com.coursework.workwise.controller;
 
 import com.coursework.workwise.dto.CompanyCreationDto;
 import com.coursework.workwise.dto.CompanyDto;
-import com.coursework.workwise.dto.JobApplicationCreationDto;
-import com.coursework.workwise.dto.JobApplicationDto;
 import com.coursework.workwise.exception.CompanyAlreadyExistException;
 import com.coursework.workwise.exception.CompanyNotFoundException;
-import com.coursework.workwise.exception.JobNotFountException;
 import com.coursework.workwise.service.CompanyService;
-import com.coursework.workwise.service.JobApplicationService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,7 +21,11 @@ public class CompanyController {
 
     @GetMapping("{id}")
     public ResponseEntity<CompanyDto> getCompanyById(@PathVariable Long id) {
-        return ResponseEntity.ok(companyService.getById(id));
+        try {
+            return ResponseEntity.ok(companyService.getById(id));
+        }catch (CompanyNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
     @GetMapping
@@ -35,7 +35,11 @@ public class CompanyController {
 
     @PostMapping
     public ResponseEntity<CompanyDto> createCompany(@Valid @RequestBody CompanyCreationDto companyCreationDto) {
-        return new ResponseEntity(companyService.create(companyCreationDto), HttpStatus.CREATED);
+        try {
+            return new ResponseEntity(companyService.create(companyCreationDto), HttpStatus.CREATED);
+        }catch (CompanyAlreadyExistException e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+        }
     }
 
     @PutMapping("{id}")
