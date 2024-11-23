@@ -32,4 +32,15 @@ public class ResumeController {
         return new ResponseEntity(resumeService.create(resumeCreationDto), HttpStatus.CREATED);
     }
 
+    @PutMapping("{id}")
+    public ResponseEntity<ResumeDto> updateResume(@PathVariable Long id, @RequestBody ResumeDto resumeDto){
+        return new ResponseEntity(resumeService.update(id, resumeDto), HttpStatus.OK);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deleteResume(@PathVariable Long id){
+        resumeService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

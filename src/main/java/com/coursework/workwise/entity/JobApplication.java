@@ -28,6 +28,4 @@ public class JobApplication {
     @Enumerated(EnumType.STRING)
     private ApplicationStatus status;
 
-    @Column(name = "submittedDate")
-    private String submittedDate;
 }

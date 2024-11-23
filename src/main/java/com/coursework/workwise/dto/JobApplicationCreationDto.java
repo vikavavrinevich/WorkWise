@@ -14,7 +14,5 @@ import java.io.Serializable;
  * DTO for {@link com.coursework.workwise.entity.JobApplication}
  */
 public record JobApplicationCreationDto(@NotNull Job jobName,
-                                        @NotNull User userName,
-                                        @NotNull ApplicationStatus status,
-                                        @NotNull @Size(max = 255) @NotEmpty @NotBlank String submittedDate) implements Serializable {
+                                        @NotNull User userName) implements Serializable {
 }

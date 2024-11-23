@@ -20,7 +20,8 @@ public class ResumeService {
     private final ResumeMapper resumeMapper;
 
     public ResumeDto getById(Long id){
-        Resume resume = resumeRepository.findById(id).orElseThrow(() -> new ResumeNotFoundException("Resume Not Found"));
+        Resume resume = resumeRepository.findById(id)
+                .orElseThrow(() -> new ResumeNotFoundException("Resume Not Found"));
         return resumeMapper.toDto(resume);
     }
 
@@ -34,5 +35,22 @@ public class ResumeService {
     @Transactional
     public ResumeDto create(ResumeCreationDto resumeCreationDto){
         return resumeMapper.toDto(resumeRepository.save(resumeMapper.toEntity(resumeCreationDto)));
+    }
+
+    @Transactional
+    public  ResumeDto update(Long id, ResumeDto resumeDto){
+        Resume resume = resumeRepository.findById(id)
+                .orElseThrow(() -> new ResumeNotFoundException("Resume Not Found"));
+        resumeMapper.partialUpdate(resumeDto, resume);
+        resume.setEducation(resumeDto.education());
+        resume.setExperience(resumeDto.experience());
+        resume.setSummary(resumeDto.summary());
+        resume.setSkills(resumeDto.skills());
+        return  resumeMapper.toDto(resumeRepository.save(resume));
+    }
+
+    @Transactional
+    public void delete(Long id){
+        resumeRepository.deleteById(id);
     }
 }

@@ -15,7 +15,6 @@ import java.time.LocalDate;
 public record JobCreationDto(@NotNull @Size(max = 70) @NotEmpty @NotBlank String title,
                              @NotNull @Size(max = 255) @NotEmpty @NotBlank String description,
                              @NotNull @Size(max = 70) @NotEmpty @NotBlank String location,
-                             @NotNull @NotEmpty  Long salaryRange,
-                             @NotNull @NotEmpty  LocalDate postedDate,
+                             @NotNull Long salary,
                              @NotNull CompanyDto companyName) implements Serializable {
 }

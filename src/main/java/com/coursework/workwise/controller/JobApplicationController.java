@@ -31,4 +31,22 @@ public class JobApplicationController {
     public ResponseEntity<JobApplicationDto> createJobApplication(@Valid @RequestBody JobApplicationCreationDto jobApplicationCreationDto) {
         return new ResponseEntity(jobApplicationService.create(jobApplicationCreationDto), HttpStatus.CREATED);
     }
+
+    @PatchMapping("/{id}/approve")
+    public ResponseEntity<JobApplicationDto> approveApplication(@PathVariable Long id) {
+        JobApplicationDto updatedApplication = jobApplicationService.approveApplication(id);
+        return ResponseEntity.ok(updatedApplication);
+    }
+
+    @PatchMapping("/{id}/reject")
+    public ResponseEntity<JobApplicationDto> rejectApplication(@PathVariable Long id) {
+        JobApplicationDto updatedApplication = jobApplicationService.rejectApplication(id);
+        return ResponseEntity.ok(updatedApplication);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deleteJobApplication(@PathVariable Long id){
+        jobApplicationService.getById(id);
+        return ResponseEntity.noContent().build();
+    }
 }
