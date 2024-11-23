@@ -20,7 +20,8 @@ public class JobService {
     private final JobMapper jobMapper;
 
     public JobDto getById(Long id){
-        Job job = jobRepository.findById(id).orElseThrow(() -> new JobNotFountException("Job Not Found"));
+        Job job = jobRepository.findById(id)
+                .orElseThrow(() -> new JobNotFountException("Job Not Found"));
         return jobMapper.toDto(job);
     }
 
@@ -35,4 +36,26 @@ public class JobService {
     public JobDto create(JobCreationDto jobCreationDto){
         return jobMapper.toDto(jobRepository.save(jobMapper.toEntity(jobCreationDto)));
     }
+
+    @Transactional
+    public JobDto update(Long id, JobDto jobDto){
+        Job job = jobRepository.findById(id)
+                .orElseThrow(() -> new JobNotFountException("Job with id " + id + " not found"));
+        jobMapper.partialUpdate(jobDto, job);
+        job.setTitle(jobDto.title());
+        job.setDescription(jobDto.description());
+        job.setLocation(jobDto.location());
+        job.setSalary(jobDto.salary());
+        return jobMapper.toDto(jobRepository.save(job));
+    }
+
+    @Transactional
+    public void delete(Long id){
+        if(!jobRepository.existsById(id)){
+            throw new JobNotFountException("Job wit id " + " not found");
+        }
+        jobRepository.deleteById(id);
+    }
+
+
 }

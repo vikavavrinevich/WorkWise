@@ -2,10 +2,8 @@ package com.coursework.workwise.controller;
 
 import com.coursework.workwise.dto.JobCreationDto;
 import com.coursework.workwise.dto.JobDto;
-import com.coursework.workwise.dto.ResumeCreationDto;
-import com.coursework.workwise.dto.ResumeDto;
+import com.coursework.workwise.exception.JobNotFountException;
 import com.coursework.workwise.service.JobService;
-import com.coursework.workwise.service.ResumeService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -34,4 +32,25 @@ public class JobController {
     public ResponseEntity<JobDto> createJob(@Valid @RequestBody JobCreationDto jobCreationDto) {
         return new ResponseEntity(jobService.create(jobCreationDto), HttpStatus.CREATED);
     }
+
+    @PutMapping("{id}")
+    public ResponseEntity<JobDto> updateJob(@PathVariable Long id, @RequestBody JobDto jobDto){
+        try{
+            return new ResponseEntity(jobService.update(id, jobDto), HttpStatus.OK);
+        } catch (JobNotFountException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deleteJob(@PathVariable Long id){
+        try{
+            jobService.getById(id);
+            return ResponseEntity.noContent().build();
+        } catch (JobNotFountException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+
 }

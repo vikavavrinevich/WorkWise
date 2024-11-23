@@ -2,10 +2,7 @@ package com.coursework.workwise.controller;
 
 import com.coursework.workwise.dto.JobApplicationCreationDto;
 import com.coursework.workwise.dto.JobApplicationDto;
-import com.coursework.workwise.dto.JobCreationDto;
-import com.coursework.workwise.dto.JobDto;
 import com.coursework.workwise.service.JobApplicationService;
-import com.coursework.workwise.service.JobService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
