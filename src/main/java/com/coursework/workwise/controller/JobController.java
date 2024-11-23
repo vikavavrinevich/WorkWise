@@ -45,7 +45,7 @@ public class JobController {
     @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteJob(@PathVariable Long id){
         try{
-            jobService.getById(id);
+            jobService.delete(id);
             return ResponseEntity.noContent().build();
         } catch (JobNotFountException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);

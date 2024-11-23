@@ -4,6 +4,9 @@ import com.coursework.workwise.dto.CompanyCreationDto;
 import com.coursework.workwise.dto.CompanyDto;
 import com.coursework.workwise.dto.JobApplicationCreationDto;
 import com.coursework.workwise.dto.JobApplicationDto;
+import com.coursework.workwise.exception.CompanyAlreadyExistException;
+import com.coursework.workwise.exception.CompanyNotFoundException;
+import com.coursework.workwise.exception.JobNotFountException;
 import com.coursework.workwise.service.CompanyService;
 import com.coursework.workwise.service.JobApplicationService;
 import jakarta.validation.Valid;
@@ -33,5 +36,26 @@ public class CompanyController {
     @PostMapping
     public ResponseEntity<CompanyDto> createCompany(@Valid @RequestBody CompanyCreationDto companyCreationDto) {
         return new ResponseEntity(companyService.create(companyCreationDto), HttpStatus.CREATED);
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<CompanyDto> updateCompany(@PathVariable Long id, @RequestBody CompanyDto companyDto){
+        try{
+            return new ResponseEntity(companyService.update(id, companyDto), HttpStatus.OK);
+        } catch (CompanyNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }catch (CompanyAlreadyExistException e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+        }
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deleteCompany(@PathVariable Long id){
+        try{
+            companyService.delete(id);
+            return ResponseEntity.noContent().build();
+        } catch (CompanyNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 }
