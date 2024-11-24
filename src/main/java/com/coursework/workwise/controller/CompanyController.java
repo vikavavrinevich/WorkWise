@@ -7,6 +7,10 @@ import com.coursework.workwise.exception.CompanyNotFoundException;
 import com.coursework.workwise.service.CompanyService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,8 +33,22 @@ public class CompanyController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CompanyDto>> getAllCompanies() {
-        return ResponseEntity.ok(companyService.getAll());
+    public ResponseEntity<Page<CompanyDto>> getAllCompanies(
+            @RequestParam(required = false) String industry,
+            @RequestParam(required = false) String location,
+            @RequestParam(defaultValue = "name") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDir,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        if (!List.of("name").contains(sortBy)) {
+            throw new IllegalArgumentException("Invalid sortBy field: " + sortBy);
+        }
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortDir), sortBy));
+
+        Page<CompanyDto> companies = companyService.getAll(industry, location, sortBy, sortDir, pageable);
+        return ResponseEntity.ok(companies);
     }
 
     @PostMapping

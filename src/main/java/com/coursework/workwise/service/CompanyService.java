@@ -7,10 +7,17 @@ import com.coursework.workwise.exception.CompanyAlreadyExistException;
 import com.coursework.workwise.exception.CompanyNotFoundException;
 import com.coursework.workwise.mapper.CompanyMapper;
 import com.coursework.workwise.repository.CompanyRepository;
+import jakarta.persistence.criteria.Predicate;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,11 +33,26 @@ public class CompanyService {
         return companyMapper.toDto(company);
     }
 
-    public List<CompanyDto> getAll(){
-        List<Company> companies = companyRepository.findAll();
-        return  companies.stream()
-                .map(companyMapper::toDto)
-                .toList();
+    public Page<CompanyDto> getAll(String industry, String location, String sortBy, String sortDir, Pageable pageable) {
+        Specification<Company> specification = (root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            if (industry != null) {
+                predicates.add(criteriaBuilder.equal(root.get("industry"), industry));
+            }
+
+            if (location != null) {
+                predicates.add(criteriaBuilder.equal(root.get("location"), location));
+            }
+
+            return predicates.isEmpty() ? null : criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        };
+
+        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
+                Sort.by(Sort.Direction.fromString(sortDir), sortBy));
+
+        Page<Company> companies = companyRepository.findAll(specification, sortedPageable);
+        return companies.map(companyMapper::toDto);
     }
 
     @Transactional

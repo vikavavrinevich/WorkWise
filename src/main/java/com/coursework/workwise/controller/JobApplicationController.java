@@ -2,10 +2,15 @@ package com.coursework.workwise.controller;
 
 import com.coursework.workwise.dto.JobApplicationCreationDto;
 import com.coursework.workwise.dto.JobApplicationDto;
+import com.coursework.workwise.enums.ApplicationStatus;
 import com.coursework.workwise.exception.JobApplicationNotFoundException;
 import com.coursework.workwise.service.JobApplicationService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,8 +33,20 @@ public class JobApplicationController {
     }
 
     @GetMapping
-    public ResponseEntity<List<JobApplicationDto>> getAllJobApplications() {
-        return ResponseEntity.ok(jobApplicationService.getAll());
+    public ResponseEntity<Page<JobApplicationDto>> getAllJobApplications(
+            @RequestParam(required = false) ApplicationStatus status,
+            @RequestParam(defaultValue = "user.name") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDir,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        if (!List.of("user.name", "status").contains(sortBy)) {
+            throw new IllegalArgumentException("Invalid sortBy field: " + sortBy);
+        }
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortDir), sortBy));
+        Page<JobApplicationDto> jobApplications = jobApplicationService.getAll(status, sortBy, sortDir, pageable);
+        return ResponseEntity.ok(jobApplications);
     }
 
     @PostMapping

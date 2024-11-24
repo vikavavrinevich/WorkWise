@@ -8,10 +8,17 @@ import com.coursework.workwise.exception.JobApplicationNotFoundException;
 import com.coursework.workwise.exception.ResumeNotFoundException;
 import com.coursework.workwise.mapper.JobApplicationMapper;
 import com.coursework.workwise.repository.JobApplicationRepository;
+import jakarta.persistence.criteria.Predicate;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,11 +34,22 @@ public class JobApplicationService {
         return jobApplicationMapper.toDto(jobApplication);
     }
 
-    public List<JobApplicationDto> getAll(){
-        List<JobApplication> jobApplications = jobApplicationRepository.findAll();
-        return  jobApplications.stream()
-                .map(jobApplicationMapper::toDto)
-                .toList();
+    public Page<JobApplicationDto> getAll(ApplicationStatus status, String sortBy, String sortDir, Pageable pageable) {
+        Specification<JobApplication> specification = (root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            if (status != null) {
+                predicates.add(criteriaBuilder.equal(root.get("status"), status));
+            }
+
+            return predicates.isEmpty() ? null : criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        };
+
+        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
+                Sort.by(Sort.Direction.fromString(sortDir), sortBy));
+
+        Page<JobApplication> jobApplications = jobApplicationRepository.findAll(specification, sortedPageable);
+        return jobApplications.map(jobApplicationMapper::toDto);
     }
 
     @Transactional
