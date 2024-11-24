@@ -2,10 +2,13 @@ package com.coursework.workwise.service;
 
 import com.coursework.workwise.dto.ResumeCreationDto;
 import com.coursework.workwise.dto.ResumeDto;
+import com.coursework.workwise.dto.UserDto;
 import com.coursework.workwise.entity.Resume;
+import com.coursework.workwise.entity.User;
 import com.coursework.workwise.exception.ResumeAlreadyExistsException;
 import com.coursework.workwise.exception.ResumeNotFoundException;
 import com.coursework.workwise.mapper.ResumeMapper;
+import com.coursework.workwise.mapper.UserMapper;
 import com.coursework.workwise.repository.ResumeRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,7 @@ import java.util.List;
 public class ResumeService {
     private final ResumeRepository resumeRepository;
     private final ResumeMapper resumeMapper;
+    private final UserMapper userMapper;
 
     public ResumeDto getById(Long id){
         Resume resume = resumeRepository.findById(id)
@@ -57,4 +61,13 @@ public class ResumeService {
         }
         resumeRepository.deleteById(id);
     }
+
+    public ResumeDto findByUser(UserDto userDto) {
+        User user = userMapper.toEntity(userDto);
+        Resume resume = resumeRepository.findByUser(user)
+                .orElseThrow(() -> new ResumeNotFoundException("Resume this user not found"));
+        return resumeMapper.toDto(resume);
+    }
+
+
 }

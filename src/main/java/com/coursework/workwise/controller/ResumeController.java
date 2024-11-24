@@ -2,6 +2,7 @@ package com.coursework.workwise.controller;
 
 import com.coursework.workwise.dto.ResumeCreationDto;
 import com.coursework.workwise.dto.ResumeDto;
+import com.coursework.workwise.dto.UserDto;
 import com.coursework.workwise.exception.ResumeAlreadyExistsException;
 import com.coursework.workwise.exception.ResumeNotFoundException;
 import com.coursework.workwise.service.ResumeService;
@@ -57,6 +58,15 @@ public class ResumeController {
             resumeService.delete(id);
             return ResponseEntity.noContent().build();
         }catch (ResumeNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<ResumeDto> getResumeByUser(@RequestBody UserDto userDto) {
+        try {
+            return ResponseEntity.ok(resumeService.findByUser(userDto));
+        } catch (ResumeNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
