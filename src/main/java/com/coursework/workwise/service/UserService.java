@@ -1,6 +1,5 @@
 package com.coursework.workwise.service;
 
-import com.coursework.workwise.dto.UserCreationDto;
 import com.coursework.workwise.dto.UserDto;
 import com.coursework.workwise.entity.User;
 import com.coursework.workwise.exception.UserNotFoundException;
@@ -13,31 +12,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 @Transactional(readOnly = true)
 @AllArgsConstructor
 public class UserService {
     private final UserRepository repository;
     private final UserMapper userMapper;
-
-//    public UserDto getById(Long id){
-//        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found"));
-//        return userMapper.toDto(user);
-//    }
-//
-//    public List<UserDto> getAll(){
-//        List<User> users = userRepository.findAll();
-//        return  users.stream()
-//                .map(userMapper::toDto)
-//                .toList();
-//    }
-//
-//    @Transactional
-//    public UserDto create(UserCreationDto userCreationDto){
-//        return userMapper.toDto(userRepository.save(userMapper.toEntity(userCreationDto)));
-//    }
 
     public User save(User user) {
         return repository.save(user);
@@ -69,4 +49,20 @@ public class UserService {
         var username = SecurityContextHolder.getContext().getAuthentication().getName();
         return getByUsername(username);
     }
+
+    public UserDto getById(Long id){
+        User user = repository
+                .findById(id).orElseThrow(() -> new UserNotFoundException("User wit id " + id + "not found!"));
+        return userMapper.toDto(user);
+    }
+
+    @Transactional
+    public void delete(Long id){
+        if (!repository.existsById(id)) {
+            throw new UserNotFoundException("User with ID " + id + " not found");
+        }
+        repository.deleteById(id);
+    }
+
+
 }

@@ -1,6 +1,5 @@
 package com.coursework.workwise.mapper;
 
-import com.coursework.workwise.dto.UserCreationDto;
 import com.coursework.workwise.dto.UserDto;
 import com.coursework.workwise.entity.User;
 import org.mapstruct.*;
@@ -13,7 +12,5 @@ public interface UserMapper {
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     User partialUpdate(UserDto userDto, @MappingTarget User user);
-
-    User toEntity(UserCreationDto userCreationDto);
 
 }

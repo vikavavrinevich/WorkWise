@@ -44,7 +44,7 @@ public class SecurityConfiguration {
                 }))
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/api/resumes**", "/api/companies/**", "/api/jobs/**", "/api/job_applications/**").permitAll()
+                        .requestMatchers("/api/resumes**", "/api/companies/**", "/api/jobs/**", "/api/job_applications/**", "/api/users/**").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider())
