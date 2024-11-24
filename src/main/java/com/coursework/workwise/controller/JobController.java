@@ -6,6 +6,10 @@ import com.coursework.workwise.exception.JobNotFoundException;
 import com.coursework.workwise.service.JobService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,8 +32,22 @@ public class JobController {
     }
 
     @GetMapping
-    public ResponseEntity<List<JobDto>> getAllJobs() {
-        return ResponseEntity.ok(jobService.getAll());
+    public ResponseEntity<Page<JobDto>> getAllJobs(
+            @RequestParam(required = false) String location,
+            @RequestParam(required = false) Long companyId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "postedDate") String sortBy,
+            @RequestParam(defaultValue = "desc") String sortDir) {
+
+        if (!List.of("title", "salary", "postedDate").contains(sortBy)) {
+            throw new IllegalArgumentException("Invalid sortBy field: " + sortBy);
+        }
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortDir), sortBy));
+
+        Page<JobDto> jobs = jobService.getAll(location, companyId, pageable);
+        return ResponseEntity.ok(jobs);
     }
 
     @PostMapping

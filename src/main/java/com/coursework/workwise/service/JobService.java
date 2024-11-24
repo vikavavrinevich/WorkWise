@@ -6,10 +6,15 @@ import com.coursework.workwise.entity.Job;
 import com.coursework.workwise.exception.JobNotFoundException;
 import com.coursework.workwise.mapper.JobMapper;
 import com.coursework.workwise.repository.JobRepository;
+import jakarta.persistence.criteria.Predicate;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,11 +30,23 @@ public class JobService {
         return jobMapper.toDto(job);
     }
 
-    public List<JobDto> getAll(){
-        List<Job> jobs = jobRepository.findAll();
-        return  jobs.stream()
-                .map(jobMapper::toDto)
-                .toList();
+    public Page<JobDto> getAll(String location, Long companyId, Pageable pageable) {
+        Specification<Job> specification = (root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            if (location != null && !location.isEmpty()) {
+                predicates.add(criteriaBuilder.like(root.get("location"), "%" + location + "%"));
+            }
+
+            if (companyId != null) {
+                predicates.add(criteriaBuilder.equal(root.join("company").get("id"), companyId));
+            }
+
+            return predicates.isEmpty() ? null : criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        };
+
+        Page<Job> jobs = jobRepository.findAll(specification, pageable);
+        return jobs.map(jobMapper::toDto);
     }
 
     @Transactional
