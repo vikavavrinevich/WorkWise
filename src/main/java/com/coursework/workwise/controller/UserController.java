@@ -17,18 +17,18 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("{id}")
-    public ResponseEntity<UserDto> getUserById(@PathVariable Long id){
-        return ResponseEntity.ok(userService.getById(id));
-    }
-
-    @GetMapping
-    public ResponseEntity<List<UserDto>> getAllUsers(){
-        return ResponseEntity.ok(userService.getAll());
-    }
-
-    @PostMapping
-    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserCreationDto userCreationDto){
-        return new ResponseEntity(userService.create(userCreationDto), HttpStatus.CREATED);
-    }
+//    @GetMapping("{id}")
+//    public ResponseEntity<UserDto> getUserById(@PathVariable Long id){
+//        return ResponseEntity.ok(userService.getById(id));
+//    }
+//
+//    @GetMapping
+//    public ResponseEntity<List<UserDto>> getAllUsers(){
+//        return ResponseEntity.ok(userService.getAll());
+//    }
+//
+//    @PostMapping
+//    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserCreationDto userCreationDto){
+//        return new ResponseEntity(userService.create(userCreationDto), HttpStatus.CREATED);
+//    }
 }
