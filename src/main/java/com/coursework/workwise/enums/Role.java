@@ -1,6 +1,7 @@
 package com.coursework.workwise.enums;
 
 public enum Role {
-    ROLE_USER,
+    ROLE_JOBSEEKER,
+    ROLE_EMPLOYER,
     ROLE_ADMIN
 }

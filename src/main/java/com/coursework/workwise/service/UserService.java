@@ -2,6 +2,7 @@ package com.coursework.workwise.service;
 
 import com.coursework.workwise.dto.UserDto;
 import com.coursework.workwise.entity.User;
+import com.coursework.workwise.enums.Role;
 import com.coursework.workwise.exception.UserNotFoundException;
 import com.coursework.workwise.mapper.UserMapper;
 import com.coursework.workwise.repository.UserRepository;
@@ -64,5 +65,12 @@ public class UserService {
         repository.deleteById(id);
     }
 
+    @Transactional
+    public void changeRoleToEmployer(Long id){
+        User user = repository
+                .findById(id).orElseThrow(() -> new UserNotFoundException("User wit id " + id + "not found!"));
+        user.setRole(Role.ROLE_EMPLOYER);
+        save(user);
+    }
 
 }

@@ -6,6 +6,7 @@ import com.coursework.workwise.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,6 +21,7 @@ public class UserController {
     }
 
     @DeleteMapping("{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id){
         try{
             userService.delete(id);
@@ -28,4 +30,12 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
+    @GetMapping("/change_role/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'JOBSEEKER')")
+    public void changeRole(@PathVariable Long id){
+        userService.changeRoleToEmployer(id);
+    }
+
+
 }

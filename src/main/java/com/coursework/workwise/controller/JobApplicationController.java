@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -50,11 +51,13 @@ public class JobApplicationController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'JOBSEEKER')")
     public ResponseEntity<JobApplicationDto> createJobApplication(@Valid @RequestBody JobApplicationCreationDto jobApplicationCreationDto) {
         return new ResponseEntity(jobApplicationService.create(jobApplicationCreationDto), HttpStatus.CREATED);
     }
 
     @PatchMapping("/{id}/approve")
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYER')")
     public ResponseEntity<JobApplicationDto> approveApplication(@PathVariable Long id) {
         try {
             JobApplicationDto updatedApplication = jobApplicationService.approveApplication(id);
@@ -65,6 +68,7 @@ public class JobApplicationController {
     }
 
     @PatchMapping("/{id}/reject")
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYER')")
     public ResponseEntity<JobApplicationDto> rejectApplication(@PathVariable Long id) {
         try {
             JobApplicationDto updatedApplication = jobApplicationService.rejectApplication(id);
@@ -75,6 +79,7 @@ public class JobApplicationController {
     }
 
     @DeleteMapping("{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'JOBSEEKER')")
     public ResponseEntity<Void> deleteJobApplication(@PathVariable Long id){
         try {
             jobApplicationService.getById(id);

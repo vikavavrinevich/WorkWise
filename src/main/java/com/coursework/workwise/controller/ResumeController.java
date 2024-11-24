@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,6 +36,7 @@ public class ResumeController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'JOBSEEKER')")
     public ResponseEntity<ResumeDto> createResume(@Valid @RequestBody ResumeCreationDto resumeCreationDto) {
         try {
             return new ResponseEntity(resumeService.create(resumeCreationDto), HttpStatus.CREATED);
@@ -44,6 +46,7 @@ public class ResumeController {
     }
 
     @PutMapping("{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'JOBSEEKER')")
     public ResponseEntity<ResumeDto> updateResume(@PathVariable Long id, @RequestBody ResumeDto resumeDto){
         try {
             return new ResponseEntity(resumeService.update(id, resumeDto), HttpStatus.OK);
@@ -53,6 +56,7 @@ public class ResumeController {
     }
 
     @DeleteMapping("{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'JOBSEEKER')")
     public ResponseEntity<Void> deleteResume(@PathVariable Long id){
         try {
             resumeService.delete(id);
