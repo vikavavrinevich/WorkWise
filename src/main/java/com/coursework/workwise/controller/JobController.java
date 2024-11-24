@@ -52,13 +52,13 @@ public class JobController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYER')")
+//    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYER')")
     public ResponseEntity<JobDto> createJob(@Valid @RequestBody JobCreationDto jobCreationDto) {
         return new ResponseEntity(jobService.create(jobCreationDto), HttpStatus.CREATED);
     }
 
     @PutMapping("{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYER')")
+//    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYER')")
     public ResponseEntity<JobDto> updateJob(@PathVariable Long id, @RequestBody JobDto jobDto) {
         try {
             return new ResponseEntity(jobService.update(id, jobDto), HttpStatus.OK);
@@ -68,7 +68,7 @@ public class JobController {
     }
 
     @DeleteMapping("{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYER')")
+//    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYER')")
     public ResponseEntity<Void> deleteJob(@PathVariable Long id) {
         try {
             jobService.delete(id);

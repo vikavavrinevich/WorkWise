@@ -1,6 +1,5 @@
 package com.coursework.workwise.repository;
 
-import com.coursework.workwise.dto.UserDto;
 import com.coursework.workwise.entity.Resume;
 import com.coursework.workwise.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;

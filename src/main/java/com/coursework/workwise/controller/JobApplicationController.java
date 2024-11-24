@@ -51,13 +51,13 @@ public class JobApplicationController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'JOBSEEKER')")
+//    @PreAuthorize("hasAnyRole('ADMIN', 'JOBSEEKER')")
     public ResponseEntity<JobApplicationDto> createJobApplication(@Valid @RequestBody JobApplicationCreationDto jobApplicationCreationDto) {
         return new ResponseEntity(jobApplicationService.create(jobApplicationCreationDto), HttpStatus.CREATED);
     }
 
     @PatchMapping("/{id}/approve")
-    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYER')")
+//    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYER')")
     public ResponseEntity<JobApplicationDto> approveApplication(@PathVariable Long id) {
         try {
             JobApplicationDto updatedApplication = jobApplicationService.approveApplication(id);
@@ -68,7 +68,7 @@ public class JobApplicationController {
     }
 
     @PatchMapping("/{id}/reject")
-    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYER')")
+//    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYER')")
     public ResponseEntity<JobApplicationDto> rejectApplication(@PathVariable Long id) {
         try {
             JobApplicationDto updatedApplication = jobApplicationService.rejectApplication(id);
@@ -79,7 +79,7 @@ public class JobApplicationController {
     }
 
     @DeleteMapping("{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'JOBSEEKER')")
+//    @PreAuthorize("hasAnyRole('ADMIN', 'JOBSEEKER')")
     public ResponseEntity<Void> deleteJobApplication(@PathVariable Long id){
         try {
             jobApplicationService.getById(id);

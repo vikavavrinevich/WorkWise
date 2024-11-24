@@ -53,7 +53,7 @@ public class CompanyController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYER')")
+//    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYER')")
     public ResponseEntity<CompanyDto> createCompany(@Valid @RequestBody CompanyCreationDto companyCreationDto) {
         try {
             return new ResponseEntity(companyService.create(companyCreationDto), HttpStatus.CREATED);
@@ -63,7 +63,7 @@ public class CompanyController {
     }
 
     @PutMapping("{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYER')")
+//    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYER')")
     public ResponseEntity<CompanyDto> updateCompany(@PathVariable Long id, @RequestBody CompanyDto companyDto){
         try{
             return new ResponseEntity(companyService.update(id, companyDto), HttpStatus.OK);
@@ -75,7 +75,7 @@ public class CompanyController {
     }
 
     @DeleteMapping("{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYER')")
+//    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYER')")
     public ResponseEntity<Void> deleteCompany(@PathVariable Long id){
         try{
             companyService.delete(id);

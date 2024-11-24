@@ -5,7 +5,6 @@ import com.coursework.workwise.dto.ResumeDto;
 import com.coursework.workwise.dto.UserDto;
 import com.coursework.workwise.entity.Resume;
 import com.coursework.workwise.entity.User;
-import com.coursework.workwise.exception.ResumeAlreadyExistsException;
 import com.coursework.workwise.exception.ResumeNotFoundException;
 import com.coursework.workwise.mapper.ResumeMapper;
 import com.coursework.workwise.mapper.UserMapper;

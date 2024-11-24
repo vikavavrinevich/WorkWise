@@ -21,7 +21,7 @@ public class UserController {
     }
 
     @DeleteMapping("{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id){
         try{
             userService.delete(id);
@@ -32,7 +32,7 @@ public class UserController {
     }
 
     @GetMapping("/change_role/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'JOBSEEKER')")
+//    @PreAuthorize("hasAnyRole('ADMIN', 'JOBSEEKER')")
     public void changeRole(@PathVariable Long id){
         userService.changeRoleToEmployer(id);
     }
