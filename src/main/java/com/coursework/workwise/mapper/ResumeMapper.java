@@ -14,6 +14,7 @@ public interface ResumeMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Resume partialUpdate(ResumeDto resumeDto, @MappingTarget Resume resume);
 
+    @Mapping(target = "user", source = "user")
     Resume toEntity(ResumeCreationDto resumeCreationDto);
 
 }

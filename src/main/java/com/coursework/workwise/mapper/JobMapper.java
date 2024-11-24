@@ -14,6 +14,6 @@ public interface JobMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Job partialUpdate(JobDto jobDto, @MappingTarget Job job);
 
+    @Mapping(target = "company", source = "company")
     Job toEntity(JobCreationDto jobCreationDto);
-
 }

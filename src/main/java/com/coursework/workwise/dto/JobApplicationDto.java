@@ -7,5 +7,5 @@ import java.io.Serializable;
 /**
  * DTO for {@link com.coursework.workwise.entity.JobApplication}
  */
-public record JobApplicationDto(Long id, JobDto jobName, UserDto userName, ApplicationStatus status) implements Serializable {
+public record JobApplicationDto(Long id, JobDto job, UserDto user, ApplicationStatus status) implements Serializable {
   }

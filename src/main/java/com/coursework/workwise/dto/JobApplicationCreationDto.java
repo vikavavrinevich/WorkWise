@@ -13,6 +13,6 @@ import java.io.Serializable;
 /**
  * DTO for {@link com.coursework.workwise.entity.JobApplication}
  */
-public record JobApplicationCreationDto(@NotNull JobDto jobName,
-                                        @NotNull UserDto userName) implements Serializable {
+public record JobApplicationCreationDto(@NotNull JobDto job,
+                                        @NotNull UserDto user) implements Serializable {
 }

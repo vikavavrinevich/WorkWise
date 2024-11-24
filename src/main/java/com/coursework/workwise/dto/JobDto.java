@@ -6,5 +6,12 @@ import java.time.LocalDate;
 /**
  * DTO for {@link com.coursework.workwise.entity.Job}
  */
-public record JobDto(Long id, String title, String description, String location, Long salary, CompanyDto companyName, LocalDate postedDate) implements Serializable {
+public record JobDto(Long id,
+                     String title,
+                     String description,
+                     String location,
+                     Long salary,
+                     LocalDate postedDate,
+                     CompanyDto company
+) implements Serializable {
   }

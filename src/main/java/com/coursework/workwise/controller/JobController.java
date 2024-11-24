@@ -22,7 +22,7 @@ public class JobController {
     public ResponseEntity<JobDto> getJobById(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(jobService.getById(id));
-        }catch (JobNotFoundException e){
+        } catch (JobNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
@@ -38,20 +38,20 @@ public class JobController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<JobDto> updateJob(@PathVariable Long id, @RequestBody JobDto jobDto){
-        try{
+    public ResponseEntity<JobDto> updateJob(@PathVariable Long id, @RequestBody JobDto jobDto) {
+        try {
             return new ResponseEntity(jobService.update(id, jobDto), HttpStatus.OK);
-        } catch (JobNotFoundException e){
+        } catch (JobNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> deleteJob(@PathVariable Long id){
-        try{
+    public ResponseEntity<Void> deleteJob(@PathVariable Long id) {
+        try {
             jobService.delete(id);
             return ResponseEntity.noContent().build();
-        } catch (JobNotFoundException e){
+        } catch (JobNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
